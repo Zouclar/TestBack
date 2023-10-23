@@ -6,6 +6,7 @@ use ApiPlatform\Metadata\ApiResource;
 use App\Repository\CompanyRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: CompanyRepository::class)]
@@ -25,6 +26,12 @@ class Company
 
     #[ORM\OneToMany(mappedBy: 'company', targetEntity: Personne::class)]
     private Collection $personnes;
+
+    #[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]
+    private ?\DateTimeInterface $startJob = null;
+
+    #[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]
+    private ?\DateTimeInterface $endJob = null;
 
     public function __construct()
     {
@@ -86,6 +93,30 @@ class Company
                 $personne->setCompany(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getStartJob(): ?\DateTimeInterface
+    {
+        return $this->startJob;
+    }
+
+    public function setStartJob(?\DateTimeInterface $startJob): static
+    {
+        $this->startJob = $startJob;
+
+        return $this;
+    }
+
+    public function getEndJob(): ?\DateTimeInterface
+    {
+        return $this->endJob;
+    }
+
+    public function setEndJob(?\DateTimeInterface $endJob): static
+    {
+        $this->endJob = $endJob;
 
         return $this;
     }
