@@ -2,11 +2,12 @@
 
 namespace App\Entity;
 
+use Symfony\Component\Validator\Constraints as Assert;
+use Doctrine\DBAL\Types\Types;
+use Doctrine\ORM\Mapping as ORM;
+
 use ApiPlatform\Metadata\ApiResource;
 use App\Repository\PersonneRepository;
-use Doctrine\DBAL\Types\Types;
-
-use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: PersonneRepository::class)]
 #[ApiResource(order: ['lastname' => 'ASC'])]
@@ -24,6 +25,7 @@ class Personne
     private ?string $lastname = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
+    #[Assert\GreaterThan('-150 years')]
     private ?\DateTimeInterface $birthdate = null;
 
     #[ORM\ManyToOne(inversedBy: 'personnes')]

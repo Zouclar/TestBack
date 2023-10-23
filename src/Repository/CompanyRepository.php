@@ -25,9 +25,12 @@ class CompanyRepository extends ServiceEntityRepository
    public function getAllPersonnesForCompany(Company $company): array
    {
     return $this->createQueryBuilder('c')
-        ->Join('c.personnes', 'p')
-        ->where('p = :company')
-        ->setParameter('company', $company->getId())
+        ->select('p')
+        ->from(Personne::class, 'p')
+        ->Join('c.personnes', 'personnes')
+        ->where('c = :company')
+        ->andWhere('p.company = :company')
+        ->setParameter('company', $company)
         ->getQuery()
         ->getResult();
    }
