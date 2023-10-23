@@ -1,0 +1,30 @@
+version: '3.8'
+ 
+services:
+  db:
+    image: mysql:5.7
+    command: --sql_mode=""
+    environment:
+      - MYSQL_ROOT_PASSWORD=testBack
+      - MYSQL_PASSWORD=testBack
+      - MYSQL_USER=testBack
+      - MYSQL_DATABASE=testBack
+  web:
+    build: .
+    ports:
+      - 8080:80
+    volumes:
+      - .:/var/www
+    environment:
+        - TZ=Europe/Paris
+  phpmyadmin:
+    image: phpmyadmin
+    links:
+      - db
+    environment:
+      PMA_HOST: db
+      PMA_PORT: 3306
+      PMA_ARBITRARY: 1
+    restart: always
+    ports:
+      - 8081:80
