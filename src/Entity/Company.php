@@ -2,13 +2,15 @@
 
 namespace App\Entity;
 
-use App\Repository\CompagnyRepository;
+use ApiPlatform\Metadata\ApiResource;
+use App\Repository\CompanyRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: CompagnyRepository::class)]
-class Compagny
+#[ORM\Entity(repositoryClass: CompanyRepository::class)]
+#[ApiResource]
+class Company
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -21,7 +23,7 @@ class Compagny
     #[ORM\Column(length: 255)]
     private ?string $post = null;
 
-    #[ORM\OneToMany(mappedBy: 'compagny', targetEntity: Personne::class)]
+    #[ORM\OneToMany(mappedBy: 'company', targetEntity: Personne::class)]
     private Collection $personnes;
 
     public function __construct()
@@ -70,7 +72,7 @@ class Compagny
     {
         if (!$this->personnes->contains($personne)) {
             $this->personnes->add($personne);
-            $personne->setCompagny($this);
+            $personne->setCompany($this);
         }
 
         return $this;
@@ -80,8 +82,8 @@ class Compagny
     {
         if ($this->personnes->removeElement($personne)) {
             // set the owning side to null (unless already changed)
-            if ($personne->getCompagny() === $this) {
-                $personne->setCompagny(null);
+            if ($personne->getCompany() === $this) {
+                $personne->setCompany(null);
             }
         }
 

@@ -2,11 +2,13 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Metadata\ApiResource;
 use App\Repository\PersonneRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: PersonneRepository::class)]
+#[ApiResource]
 class Personne
 {
     #[ORM\Id]
@@ -24,7 +26,7 @@ class Personne
     private ?\DateTimeInterface $birthdate = null;
 
     #[ORM\ManyToOne(inversedBy: 'personnes')]
-    private ?Compagny $compagny = null;
+    private ?Company $company = null;
 
     public function getId(): ?int
     {
@@ -67,14 +69,14 @@ class Personne
         return $this;
     }
 
-    public function getCompagny(): ?Compagny
+    public function getCompany(): ?Company
     {
-        return $this->compagny;
+        return $this->company;
     }
 
-    public function setCompagny(?Compagny $compagny): static
+    public function setCompany(?Company $company): static
     {
-        $this->compagny = $compagny;
+        $this->company = $company;
 
         return $this;
     }
